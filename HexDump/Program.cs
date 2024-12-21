@@ -10,7 +10,7 @@ namespace HexDump
             var position = 0;
             string fileName = "binarydata.dat"; //binarydata.dat data.txt
 
-            using (Stream input = File.OpenRead(args[0]))
+            using (Stream input = GetInputStream(args))
             {
                 var buffer = new byte[16];
                 int bytesRead;
@@ -37,6 +37,14 @@ namespace HexDump
                     Console.WriteLine("\t{0}", bufferContents.Substring(0, bytesRead));
                 }
             }
+        }
+
+        static Stream GetInputStream(string[] args)
+        {
+            if ((args.Length != 1) || !File.Exists(args[0]))
+                return Console.OpenStandardInput();
+            else
+                return File.OpenRead(args[0]);
         }
     }
 }
