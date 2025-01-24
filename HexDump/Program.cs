@@ -44,7 +44,15 @@ namespace HexDump
             if ((args.Length != 1) || !File.Exists(args[0]))
                 return Console.OpenStandardInput();
             else
-                return File.OpenRead(args[0]);
+                try
+                {
+                    return File.OpenRead(args[0]);
+                }
+                catch (UnauthorizedAccessException ex)
+                {
+                    Console.Error.WriteLine("Nie można wczytać {0}, \nZrzut ze standardowego wejścia: {1}", args[0], ex.Message);
+                    return Console.OpenStandardInput();
+                }
         }
     }
 }
